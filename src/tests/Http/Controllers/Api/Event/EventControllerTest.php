@@ -12,11 +12,12 @@ class EventControllerTest extends TestCase
 {
     use DatabaseMigrations;
 
-    private \Illuminate\Database\Eloquent\Collection|\Illuminate\Database\Eloquent\Model $user;
+    private \Illuminate\Database\Eloquent\Collection|\Illuminate\Database\Eloquent\Model| User $user;
 
     protected function setUp(): void
     {
         parent::setUp();
+
         $this->user = User::factory()->create([
             'password' => Hash::make('secret'),
         ]);
@@ -39,7 +40,7 @@ class EventControllerTest extends TestCase
         $response = $this->withHeaders([])->postJson('/api/event', $eventData);
 
         $response->assertStatus(200);
-        $response->assertJsonStructure(['result' => ['event' => ['title', 'text']]]);
+        $response->assertJsonStructure(['result' => ['title', 'text']]);
     }
 
     public function testGetEvents()
@@ -49,23 +50,61 @@ class EventControllerTest extends TestCase
             'creator_id' => $this->user->id
         ]);
 
-        $response = $this->withHeaders([])->getJson('/api/events');
+        $response = $this->withHeaders([])->getJson('/api/events?filter[not-me]=true');
 
         $response->assertStatus(200);
-        $response->assertJsonCount(3, 'result.events');
+        $response->assertJsonCount(3, 'result');
         $response->assertJsonStructure([
             'result' => [
-                'events' => [
-                    '*' => [
-                        'id',
-                        'title',
-                        'text',
-                        'creation_date',
-                        'creator_id',
-                        'created_at',
-                        'updated_at'
-                    ]
+                '*' => [
+                    'id',
+                    'title',
+                    'text',
+                    'creation_date',
+                    'creator_id',
+                    'created_at',
+                    'updated_at'
                 ]
+            ]
+        ]);
+    }
+
+    public function testGetEventsWhereUserIsParticipant()
+    {
+        // Создадим несколько событий
+        Event::factory()->count(3)->create([
+            'creator_id' => $this->user->id
+        ]);
+
+        // Получим случайное событие и привяжем к пользователю
+        $event = Event::first();
+        $this->user->participatingEvents()->attach($event);
+
+        $response = $this->withHeaders([])->getJson('/api/events?filter[participating]=true');
+
+        $response->assertStatus(200);
+        $response->assertJsonCount(1, 'result');
+    }
+
+    public function testGetEvent()
+    {
+        // Создадим несколько событий
+        $event = Event::factory()->create([
+            'creator_id' => $this->user->id
+        ]);
+
+        $response = $this->withHeaders([])->getJson('/api/event/' . $event->id);
+
+        $response->assertStatus(200);
+        $response->assertJsonStructure([
+            'result' => [
+                'id',
+                'title',
+                'text',
+                'creation_date',
+                'creator_id',
+                'created_at',
+                'updated_at'
             ]
         ]);
     }
@@ -84,7 +123,7 @@ class EventControllerTest extends TestCase
 
         $response->assertStatus(200);
         $this->assertDatabaseHas('event_user', [
-            'user_id' => $this->user->id,
+            'user_id'  => $this->user->id,
             'event_id' => $event->id
         ]);
     }
@@ -102,7 +141,7 @@ class EventControllerTest extends TestCase
 
         $response->assertStatus(200);
         $this->assertDatabaseMissing('event_user', [
-            'user_id' => $this->user->id,
+            'user_id'  => $this->user->id,
             'event_id' => $event->id
         ]);
     }

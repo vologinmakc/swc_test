@@ -2,11 +2,13 @@
 
 namespace App\Http\Controllers\Api\Event;
 
+use App\Filters\QueryFilter;
 use App\Http\Controllers\Api\ApiBaseController;
 use App\Http\Requests\Api\Event\CreateEventRequest;
 use App\Models\Event;
 use App\Services\Dto\EventDto\EventDto;
 use Illuminate\Http\JsonResponse;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 
@@ -25,18 +27,26 @@ class EventController extends ApiBaseController
 
         DB::commit();
 
-        return $this->response(['event' => $event]);
+        return $this->response($event);
     }
 
     /**
      * Так как по задаче нет понимание относительно пагинации то выводим весь список событий
      * @return JsonResponse
      */
-    public function index()
+    public function index(Request $request)
     {
-        $events = Event::all();
+        $queryEvents = Event::query();
+        // Если в запросе есть фильтры - применим их
+        $queryEvents = (new QueryFilter($request))->apply($queryEvents);
 
-        return $this->response(['events' => $events]);
+        return $this->response($queryEvents->get());
+    }
+
+    public function show(Event $event)
+    {
+        // Вернем событие с участниками
+        return $this->response($event->load('participants'));
     }
 
     /**

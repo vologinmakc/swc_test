@@ -123,6 +123,16 @@
       <path value="$PROJECT_DIR$/src/vendor/graham-campbell/result-type" />
       <path value="$PROJECT_DIR$/src/vendor/jeroennoten/laravel-adminlte" />
       <path value="$PROJECT_DIR$/src/vendor/almasaeed2010/adminlte" />
+      <path value="$PROJECT_DIR$/src/vendor/laravel-lang/publisher" />
+      <path value="$PROJECT_DIR$/src/vendor/dragon-code/support" />
+      <path value="$PROJECT_DIR$/src/vendor/laravel-lang/lang" />
+      <path value="$PROJECT_DIR$/src/vendor/dragon-code/contracts" />
+      <path value="$PROJECT_DIR$/src/vendor/laravel-lang/http-statuses" />
+      <path value="$PROJECT_DIR$/src/vendor/laravel-lang/common" />
+      <path value="$PROJECT_DIR$/src/vendor/dragon-code/pretty-array" />
+      <path value="$PROJECT_DIR$/src/vendor/laravel-lang/attributes" />
+      <path value="$PROJECT_DIR$/src/vendor/symfony/polyfill-php81" />
+      <path value="$PROJECT_DIR$/src/vendor/archtechx/enums" />
     </include_path>
   </component>
   <component name="PhpInterpreters">
@@ -195,6 +205,15 @@
         </phpinfo>
       </interpreter>
     </phpInfoCache>
+  </component>
+  <component name="PhpProjectServersManager">
+    <servers>
+      <server host="http://127.0.0.1" id="90309c67-e878-4a5a-a9df-ca489d534960" name="Docker" port="8000" use_path_mappings="true">
+        <path_mappings>
+          <mapping local-root="$PROJECT_DIR$/src" remote-root="/application" />
+        </path_mappings>
+      </server>
+    </servers>
   </component>
   <component name="PhpProjectSharedConfiguration" php_language_level="8.1" />
   <component name="PhpStanOptionsConfiguration">

@@ -6,6 +6,17 @@
       <sourceFolder url="file://$MODULE_DIR$/src/app" isTestSource="false" packagePrefix="App\" />
       <sourceFolder url="file://$MODULE_DIR$/src/database/factories" isTestSource="false" packagePrefix="Database\Factories\" />
       <sourceFolder url="file://$MODULE_DIR$/src/database/seeders" isTestSource="false" packagePrefix="Database\Seeders\" />
+      <sourceFolder url="file://$MODULE_DIR$/src/spec" isTestSource="true" />
+      <excludeFolder url="file://$MODULE_DIR$/src/vendor/archtechx/enums" />
+      <excludeFolder url="file://$MODULE_DIR$/src/vendor/dragon-code/contracts" />
+      <excludeFolder url="file://$MODULE_DIR$/src/vendor/dragon-code/pretty-array" />
+      <excludeFolder url="file://$MODULE_DIR$/src/vendor/dragon-code/support" />
+      <excludeFolder url="file://$MODULE_DIR$/src/vendor/laravel-lang/attributes" />
+      <excludeFolder url="file://$MODULE_DIR$/src/vendor/laravel-lang/common" />
+      <excludeFolder url="file://$MODULE_DIR$/src/vendor/laravel-lang/http-statuses" />
+      <excludeFolder url="file://$MODULE_DIR$/src/vendor/laravel-lang/lang" />
+      <excludeFolder url="file://$MODULE_DIR$/src/vendor/laravel-lang/publisher" />
+      <excludeFolder url="file://$MODULE_DIR$/src/vendor/symfony/polyfill-php81" />
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
