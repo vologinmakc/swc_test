@@ -44,144 +44,93 @@
    ```
 
 7. **Запуск сервера:**
-   Если все шаги выполнены правильно, приложение теперь должно быть доступно по адресу: [http://localhost:8000](http://localhost:8000)
+   Если все шаги выполнены правильно, приложение должно быть доступно по адресу: [http://localhost:8000](http://localhost:8000)
 
 ---
 
-### API Руководство
+## API Документация
 
-#### Аутентификация
+### События (Events):
 
-- **URL:** `/api/token`
-- **Метод:** `POST`
-- **Параметры:**
-    - `login`: Имя пользователя
-    - `password`: Пароль
-- **Ответ:**
-    - Токен для доступа к API
+1. **Создание события**:
+    - **Endpoint**: `/api/event`
+    - **Method**: `POST`
+    - **Headers**: `Authorization: Bearer <token>`
+    - **Body**:
+      ```json
+      {
+        "title": "title_event",
+        "text": "description_event"
+      }
+      ```
 
-Пример:
-```json
-{
-    "result": {
-        "token": "api_token"
-    }
-}
-```
+2. **Получение всех событий, где пользователь не принимает участия**:
+    - **Endpoint**: `/api/events?filter[not-me]=true`
+    - **Method**: `GET`
+    - **Headers**: `Authorization: Bearer <token>`
 
-#### Регистрация нового пользователя
+3. **Получение событий, где пользователь участник**:
+    - **Endpoint**: `/api/events?filter[participating]=true`
+    - **Method**: `GET`
+    - **Headers**: `Authorization: Bearer <token>`
 
-- **URL:** `/api/register`
-- **Метод:** `POST`
-- **Параметры:**
-    - `login`: Логин пользователя
-    - `first_name`: Имя
-    - `last_name`: Фамилия
-    - `birth_date`: Дата рождения
-    - `password`: Пароль
-- **Ответ:**
-    - Токен для доступа к API
+4. **Получение конкретного события**:
+    - **Endpoint**: `/api/event/<event_id>`
+    - **Method**: `GET`
+    - **Headers**: `Authorization: Bearer <token>`
 
-Пример:
-```json
-{
-    "result": {
-        "token": "api_token"
-    }
-}
-```
+5. **Присоединение к событию**:
+    - **Endpoint**: `/api/event/<event_id>/join`
+    - **Method**: `POST`
+    - **Headers**: `Authorization: Bearer <token>`
 
-#### Получение информации о текущем пользователе
+6. **Покинуть событие**:
+    - **Endpoint**: `/api/event/<event_id>/leave`
+    - **Method**: `POST`
+    - **Headers**: `Authorization: Bearer <token>`
 
-- **URL:** `/api/me`
-- **Метод:** `GET`
-- **Заголовки:**
-    - `Authorization`: `Bearer api_token`
-- **Ответ:**
-    - Информация о текущем пользователе
+7. **Удаление события**:
+    - **Endpoint**: `/api/event/<event_id>`
+    - **Method**: `DELETE`
+    - **Headers**: `Authorization: Bearer <token>`
+    - Удалить событие может только его автор!
 
-Пример:
-```json
-{
-    "result": {
-        "user": {
-            "id": 1,
-            "login": "user_login",
-            "first_name": "John",
-            "last_name": "Doe",
-            "birth_date": "1999-01-01"
-        }
-    }
-}
-```
+---
 
-#### Создание нового события
+### Пользователи (Users):
 
-- **URL:** `/api/event`
-- **Метод:** `POST`
-- **Заголовки:**
-    - `Authorization`: `Bearer api_token`
-- **Параметры:**
-    - `title`: Название события
-    - `text`: Описание события
-- **Ответ:**
-    - Информация о созданном событии
+1. **Регистрация**:
+    - Важно: Дата рождения не обязательный параметр! Пароль минимум 8 символов
+    - **Endpoint**: `/api/register`
+    - **Method**: `POST`
+    - **Body**:
+      ```json
+      {
+        "login": "test-user",
+        "first_name": "John",
+        "last_name": "Doe",
+        "birth_date": "1999-01-01",
+        "password": "secret123"
+      }
+      ```
 
-Пример:
-```json
-{
-    "result": {
-        "event": {
-            "title": "Sample Event",
-            "text": "Event description"
-        }
-    }
-}
-```
+2. **Получение информации о текущем пользователе**:
+    - **Endpoint**: `/api/me`
+    - **Method**: `GET`
+    - **Headers**: `Authorization: Bearer <token>`
 
-#### Получение списка всех событий
+---
 
-- **URL:** `/api/events`
-- **Метод:** `GET`
-- **Заголовки:**
-    - `Authorization`: `Bearer api_token`
-- **Ответ:**
-    - Список всех событий
+### Аутентификация (Auth):
 
-Пример:
-```json
-{
-    "result": {
-        "events": [
-            {
-                "id": 1,
-                "title": "Event Title",
-                "text": "Event Description"
-            }
-        ]
-    }
-}
-```
-
-#### Присоединение к событию
-
-- **URL:** `/api/event/{event_id}/join`
-- **Метод:** `POST`
-- **Заголовки:**
-    - `Authorization`: `Bearer api_token`
-
-#### Покинуть событие
-
-- **URL:** `/api/event/{event_id}/leave`
-- **Метод:** `POST`
-- **Заголовки:**
-    - `Authorization`: `Bearer api_token`
-
-#### Удаление события
-
-- **URL:** `/api/event/{event_id}`
-- **Метод:** `DELETE`
-- **Заголовки:**
-    - `Authorization`: `Bearer api_token`
-
+1. **Аутентификация пользователя**:
+    - **Endpoint**: `/api/token`
+    - **Method**: `POST`
+    - **Body**:
+      ```json
+      {
+        "login": "<login>",
+        "password": "<password>"
+      }
+      ```
 ---
